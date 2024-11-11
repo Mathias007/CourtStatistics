@@ -1,0 +1,11 @@
+{
+    "ignore": ["**/*.test.ts", "**/*.spec.ts", "node_modules"],
+    "watch": ["./"],
+    "exec": "yarn start",
+    "ext": "ts",
+    "events": {
+        "restart": "kill-port 5001",
+        "crash": "kill-port 5001"
+    },
+    "delay": "1500"
+}
