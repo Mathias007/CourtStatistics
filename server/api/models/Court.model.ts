@@ -1,19 +1,19 @@
-import mongoose, { Document, Schema } from "mongoose";
-import { DatabaseModels } from "../../config/DatabaseModels";
+import mongoose, { Schema, Document } from "mongoose";
 
-const { COURT } = DatabaseModels;
-
-interface Case {
-    category: string;
-    incoming_backlog: number;
-    inflow: number;
-    resolved: number;
-    outgoing_backlog: number;
+export enum StatisticCategory {
+    PENAL = "PENAL",
+    CIVIL = "CIVIL",
+    LABOR = "LABOR",
 }
 
-interface Statistic {
+export interface Statistic {
+    id: number;
     year: number;
-    cases: Case[];
+    category: StatisticCategory;
+    incoming: number;
+    resolved: number;
+    backlog_start: number;
+    backlog_end: number;
 }
 
 export interface CourtDocument extends Document {
@@ -21,22 +21,27 @@ export interface CourtDocument extends Document {
     statistics: Statistic[];
 }
 
-const CaseSchema = new Schema<Case>({
-    category: { type: String, required: true },
-    incoming_backlog: { type: Number, required: true },
-    inflow: { type: Number, required: true },
-    resolved: { type: Number, required: true },
-    outgoing_backlog: { type: Number, required: true },
-});
-
 const StatisticSchema = new Schema<Statistic>({
+    id: {
+        type: Number,
+        required: true,
+        unique: false,
+    },
     year: { type: Number, required: true },
-    cases: { type: [CaseSchema], required: true },
+    category: {
+        type: String,
+        enum: StatisticCategory,
+        required: true,
+    },
+    incoming: { type: Number, required: true },
+    resolved: { type: Number, required: true },
+    backlog_start: { type: Number, required: true },
+    backlog_end: { type: Number, required: true },
 });
 
 const CourtSchema = new Schema<CourtDocument>({
-    court_name: { type: String, required: true },
-    statistics: { type: [StatisticSchema], required: true },
+    court_name: { type: String, required: true, unique: true },
+    statistics: [StatisticSchema],
 });
 
-export default mongoose.model<CourtDocument>(COURT, CourtSchema);
+export const Court = mongoose.model<CourtDocument>("Court", CourtSchema);
