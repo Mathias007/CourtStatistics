@@ -1,8 +1,9 @@
 import React from "react";
+import { Court, CourtStatistic } from "../models/court.model";
 
 interface CourtTableProps {
-    data: any[];
-    onEdit: (court: any) => void;
+    data: Court[];
+    onEdit: (court: Court) => void;
     onDelete: (id: string) => void;
 }
 
@@ -11,7 +12,6 @@ const CourtTable: React.FC<CourtTableProps> = ({ data, onEdit, onDelete }) => {
         <table>
             <thead>
                 <tr>
-                    {/* <th>ID</th> */}
                     <th>Nazwa Sądu</th>
                     <th>Rok Statystyczny</th>
                     <th>Kategoria Spraw</th>
@@ -21,21 +21,28 @@ const CourtTable: React.FC<CourtTableProps> = ({ data, onEdit, onDelete }) => {
             <tbody>
                 {data.map((court) => (
                     <tr key={court._id}>
-                        {/* <td>{court._id}</td> */}
                         <td>{court.court_name}</td>
                         <td>
-                            {court.statistics
-                                .map((stat: any) => stat.year)
-                                .join(", ")}
+                            {court.statistics && court.statistics.length > 0
+                                ? court.statistics
+                                      .map((stat: CourtStatistic) => stat.year)
+                                      .join(", ")
+                                : "Brak danych"}
                         </td>
                         <td>
-                            {court.statistics
-                                .map((stat: any) =>
-                                    stat.cases
-                                        .map((c: any) => c.category)
-                                        .join(", ")
-                                )
-                                .join(", ")}
+                            {court.statistics && court.statistics.length > 0
+                                ? court.statistics
+                                      .map((stat: CourtStatistic) =>
+                                          stat.category === "CIVIL"
+                                              ? "Cywilne"
+                                              : stat.category === "PENAL"
+                                              ? "Karne"
+                                              : stat.category === "LABOR"
+                                              ? "Pracy"
+                                              : "Inne"
+                                      )
+                                      .join(", ")
+                                : "Brak danych"}
                         </td>
                         <td>
                             <button onClick={() => onEdit(court)}>Edit</button>
