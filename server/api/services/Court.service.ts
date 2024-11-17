@@ -1,4 +1,4 @@
-import Court, { CourtDocument } from "../models/Court.model";
+import { Court, CourtDocument } from "../models/Court.model";
 
 export const getCourts = async (): Promise<CourtDocument[]> => {
     return Court.find();
