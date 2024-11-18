@@ -18,19 +18,35 @@ const CourtDetails: React.FC = () => {
         fetchCourt();
     }, [id]);
 
+    const handleDeleteStatistic = async (courtId: string, statId: number) => {
+        if (court) {
+            await deleteStatistic(courtId, statId);
+            setCourt({
+                ...court,
+                statistics: court.statistics.filter(
+                    (stat) => stat.id !== statId
+                ),
+            });
+        }
+    };
+
     if (!court) return <p>Wczytywanie...</p>;
 
     return (
         <div>
             <h1>{court.court_name}</h1>
-            {/* <p>Address: {court.address}</p> */}
+            <p>Adres: {court.court_address}</p>
             <h2>Statystyki</h2>
             <button
                 onClick={() => navigate(`/courts/${court._id}/statistics/add`)}
+                className="form-button"
             >
                 Dodaj statystykę
             </button>
-            <table>
+            <button onClick={() => navigate("/")} className="form-button">
+                Wróć
+            </button>
+            <table className="table">
                 <thead>
                     <tr>
                         <th>Rok</th>
@@ -44,15 +60,16 @@ const CourtDetails: React.FC = () => {
                 </thead>
                 <tbody>
                     {court.statistics.map((stat) => (
-                        <tr key={stat.id}>
+                        <tr key={stat.id} className="table-row">
                             <td>{stat.year}</td>
                             <td>{stat.category}</td>
                             <td>{stat.backlog_start}</td>
                             <td>{stat.incoming}</td>
                             <td>{stat.resolved}</td>
                             <td>{stat.backlog_end}</td>
-                            <td>
+                            <td className="table-actions">
                                 <button
+                                    className="table-button"
                                     onClick={() =>
                                         navigate(
                                             `/courts/${court._id}/statistics/edit/${stat.id}`
@@ -62,8 +79,12 @@ const CourtDetails: React.FC = () => {
                                     Edytuj
                                 </button>
                                 <button
+                                    className="table-button"
                                     onClick={() =>
-                                        deleteStatistic(court._id, stat.id)
+                                        handleDeleteStatistic(
+                                            court._id,
+                                            stat.id
+                                        )
                                     }
                                 >
                                     Usuń
