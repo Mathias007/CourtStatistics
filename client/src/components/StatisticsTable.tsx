@@ -32,30 +32,28 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({
     return (
         <div>
             <h3>
-                Statistics for {category} - {year}
+                Statystyki spraw kategorii {category} za rok {year}
             </h3>
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Backlog Start</th>
-                        <th>Incoming</th>
-                        <th>Resolved</th>
-                        <th>Backlog End</th>
-                        <th>Actions</th>
+                        <th>Zaległość wejściowa</th>
+                        <th>Wpływ</th>
+                        <th>Załatwienia</th>
+                        <th>Zaległość wyjściowa</th>
+                        <th>Akcje</th>
                     </tr>
                 </thead>
                 <tbody>
                     {statistics.map((stat) => (
                         <tr key={stat.id}>
-                            <td>{stat.id}</td>
                             <td>{stat.backlog_start}</td>
                             <td>{stat.incoming}</td>
                             <td>{stat.resolved}</td>
                             <td>{stat.backlog_end}</td>
                             <td>
                                 <button onClick={() => handleDelete(stat.id)}>
-                                    Delete
+                                    Usuń
                                 </button>
                             </td>
                         </tr>
