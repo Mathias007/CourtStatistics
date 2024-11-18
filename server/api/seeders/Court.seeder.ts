@@ -2,7 +2,8 @@ import { Court, CourtDocument } from "../models/Court.model";
 
 const sampleCourts: CourtDocument[] = [
     {
-        court_name: "SA Katowice",
+        court_name: "Sąd Apelacyjny w Katowicach",
+        court_address: "al. Wojciecha Korfantego 117/119, 40-156 Katowice",
         statistics: [
             {
                 id: 1,
@@ -34,7 +35,8 @@ const sampleCourts: CourtDocument[] = [
         ],
     },
     {
-        court_name: "SA Kraków",
+        court_name: "Sąd Apelacyjny w Krakowie",
+        court_address: "Przy Rondzie 3, 31-547 Kraków",
         statistics: [
             {
                 id: 1,

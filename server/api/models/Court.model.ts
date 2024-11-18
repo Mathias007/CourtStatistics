@@ -18,6 +18,7 @@ export interface Statistic {
 
 export interface CourtDocument extends Document {
     court_name: string;
+    court_address: string;
     statistics: Statistic[];
 }
 
@@ -41,6 +42,7 @@ const StatisticSchema = new Schema<Statistic>({
 
 const CourtSchema = new Schema<CourtDocument>({
     court_name: { type: String, required: true, unique: true },
+    court_address: { type: String, required: false, unique: false },
     statistics: [StatisticSchema],
 });
 

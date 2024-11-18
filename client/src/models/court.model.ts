@@ -11,5 +11,6 @@ export interface CourtStatistic {
 export interface Court {
     _id: string;
     court_name: string;
+    court_address: string;
     statistics: CourtStatistic[];
 }
