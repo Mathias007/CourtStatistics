@@ -1,42 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+    createCourt,
+    updateCourt,
+    getCourtById,
+} from "../services/court.service";
 
-interface CourtFormProps {
-    initialData?: any;
-    onSubmit: (data: any) => void;
-}
-
-const CourtForm: React.FC<CourtFormProps> = ({ initialData, onSubmit }) => {
+const CourtForm: React.FC = () => {
+    const { id } = useParams<{ id?: string }>();
     const [formData, setFormData] = useState({
         court_name: "",
-        statistics: [],
+        // address: ""
     });
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        if (initialData) setFormData(initialData);
-    }, [initialData]);
+    React.useEffect(() => {
+        if (id) {
+            const fetchData = async () => {
+                const court = await getCourtById(id);
+                setFormData({
+                    court_name: court.court_name,
+                    // address: court.address
+                });
+            };
+            fetchData();
+        }
+    }, [id]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit(formData);
+        if (id) {
+            await updateCourt(id, formData);
+        } else {
+            await createCourt(formData);
+        }
+        navigate("/");
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <label>
-                Court Name:
+            <div>
+                <label>Nazwa</label>
                 <input
                     type="text"
-                    name="court_name"
                     value={formData.court_name}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                        setFormData({ ...formData, court_name: e.target.value })
+                    }
                 />
-            </label>
-            <button type="submit">Submit</button>
+            </div>
+            {/* <div>
+                <label>Address</label>
+                <input
+                    type="text"
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                />
+            </div> */}
+            <button type="submit">Zapisz</button>
         </form>
     );
 };
