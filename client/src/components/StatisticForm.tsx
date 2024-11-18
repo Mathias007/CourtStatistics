@@ -6,8 +6,6 @@ import {
     getCourtById,
 } from "../services/court.service";
 
-// interface StatisticFormProps {}
-
 const StatisticForm: React.FC = () => {
     const { courtId, statId } = useParams<{
         courtId: string;
@@ -75,23 +73,25 @@ const StatisticForm: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className="form-container">
             <h1>{statId ? "Edytuj statystykę" : "Dodaj nową statystykę"}</h1>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="form-group">
                     <label>Rok</label>
                     <input
                         type="number"
                         name="year"
+                        className="form-input"
                         value={formData.year}
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label>Kategoria</label>
                     <select
                         name="category"
+                        className="form-input"
                         value={formData.category}
                         onChange={handleChange}
                         required
@@ -102,47 +102,60 @@ const StatisticForm: React.FC = () => {
                         <option value="LABOR">Pracy</option>
                     </select>
                 </div>
-                <div>
+                <div className="form-group">
                     <label>Zaległość wejściowa</label>
                     <input
                         type="number"
                         name="backlog_start"
+                        className="form-input"
                         value={formData.backlog_start}
                         onChange={handleChange}
                         required
                     />
+                </div>
+                <div className="form-group">
                     <label>Wpływ</label>
                     <input
                         type="number"
                         name="incoming"
+                        className="form-input"
                         value={formData.incoming}
                         onChange={handleChange}
                         required
                     />
+                </div>
+                <div className="form-group">
                     <label>Załatwienia</label>
                     <input
                         type="number"
                         name="resolved"
+                        className="form-input"
                         value={formData.resolved}
                         onChange={handleChange}
                         required
                     />
+                </div>
+                <div className="form-group">
                     <label>Zaległość wyjściowa</label>
                     <input
                         type="number"
                         name="backlog_end"
+                        className="form-input"
                         value={formData.backlog_end}
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <button type="submit">
+                <button type="submit" className="form-button">
                     {statId ? "Zatwierdź zmiany" : "Dodaj statystykę"}
                 </button>
+                <button
+                    onClick={() => navigate(`/courts/${courtId}`)}
+                    className="form-button form-button-cancel"
+                >
+                    Anuluj
+                </button>
             </form>
-            <button onClick={() => navigate(`/courts/${courtId}`)}>
-                Anuluj
-            </button>
         </div>
     );
 };

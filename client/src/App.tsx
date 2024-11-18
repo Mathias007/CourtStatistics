@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import "./App.css";
-
 import CourtList from "./components/CourtList";
 import CourtForm from "./components/CourtForm";
 import CourtDetails from "./components/CourtDetails";
