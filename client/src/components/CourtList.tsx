@@ -15,27 +15,35 @@ const CourtList: React.FC = () => {
         fetchCourts();
     }, []);
 
+    const handleDelete = async (courtId: string) => {
+        await deleteCourt(courtId);
+        setCourts(courts.filter((court) => court._id !== courtId));
+    };
+
+    if (!courts.length) return <p>Wczytywanie...</p>;
+
     return (
         <div>
             <h1>Lista sądów</h1>
             <button onClick={() => navigate("/courts/add")}>Dodaj sąd</button>
-            <table>
+            <table className="table">
                 <thead>
                     <tr>
                         <th>Nazwa</th>
-                        {/* <th>Adres</th> */}
+                        <th>Adres</th>
                         <th>Statystyki</th>
                         <th>Akcje</th>
                     </tr>
                 </thead>
                 <tbody>
                     {courts.map((court) => (
-                        <tr key={court._id}>
+                        <tr key={court._id} className="table-row">
                             <td>{court.court_name}</td>
-                            {/* <td>{court.address}</td> */}
+                            <td>{court.court_address}</td>
                             <td>{court.statistics.length}</td>
-                            <td>
+                            <td className="table-actions">
                                 <button
+                                    className="table-button"
                                     onClick={() =>
                                         navigate(`/courts/${court._id}`)
                                     }
@@ -43,13 +51,17 @@ const CourtList: React.FC = () => {
                                     Zobacz
                                 </button>
                                 <button
+                                    className="table-button"
                                     onClick={() =>
                                         navigate(`/courts/edit/${court._id}`)
                                     }
                                 >
                                     Edytuj
                                 </button>
-                                <button onClick={() => deleteCourt(court._id)}>
+                                <button
+                                    className="table-button"
+                                    onClick={() => handleDelete(court._id)}
+                                >
                                     Usuń
                                 </button>
                             </td>
