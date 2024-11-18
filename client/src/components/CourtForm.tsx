@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     createCourt,
@@ -10,17 +10,17 @@ const CourtForm: React.FC = () => {
     const { id } = useParams<{ id?: string }>();
     const [formData, setFormData] = useState({
         court_name: "",
-        // address: ""
+        court_address: "",
     });
     const navigate = useNavigate();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (id) {
             const fetchData = async () => {
                 const court = await getCourtById(id);
                 setFormData({
                     court_name: court.court_name,
-                    // address: court.address
+                    court_address: court.court_address,
                 });
             };
             fetchData();
@@ -38,27 +38,42 @@ const CourtForm: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Nazwa</label>
-                <input
-                    type="text"
-                    value={formData.court_name}
-                    onChange={(e) =>
-                        setFormData({ ...formData, court_name: e.target.value })
-                    }
-                />
-            </div>
-            {/* <div>
-                <label>Address</label>
-                <input
-                    type="text"
-                    value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                />
-            </div> */}
-            <button type="submit">Zapisz</button>
-        </form>
+        <div>
+            <h1>{id ? "Edytuj sąd" : "Dodaj sąd"}</h1>
+            <form className="form-container" onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>Nazwa</label>
+                    <input
+                        type="text"
+                        className="form-input"
+                        value={formData.court_name}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                court_name: e.target.value,
+                            })
+                        }
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Adres</label>
+                    <input
+                        type="text"
+                        className="form-input"
+                        value={formData.court_address}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                court_address: e.target.value,
+                            })
+                        }
+                    />
+                </div>
+                <button type="submit" className="form-button">
+                    Zapisz
+                </button>
+            </form>
+        </div>
     );
 };
 
