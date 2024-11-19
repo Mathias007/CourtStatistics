@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Court } from "../models/court.model";
 import { getCourts, deleteCourt } from "../services/court.service";
+import ComparativeBarChart from "./charts/ComparativeBarChart";
+import ResolvedCasesComparisonChart from "./charts/ResolvedCasesComparisionChart";
 
 const CourtList: React.FC = () => {
     const [courts, setCourts] = useState<Court[]>([]);
@@ -69,6 +71,10 @@ const CourtList: React.FC = () => {
                     ))}
                 </tbody>
             </table>
+            <div className="comparative-chart">
+                <ComparativeBarChart />
+                <ResolvedCasesComparisonChart />
+            </div>
         </div>
     );
 };
