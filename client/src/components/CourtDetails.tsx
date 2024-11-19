@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Court } from "../models/court.model";
 import { getCourtById, deleteStatistic } from "../services/court.service";
+import BarChart from "./charts/BarChart";
+import CategoryChart from "./charts/CategoryChart";
+import ResolvedCasesChart from "./charts/ResolvedCasesChart";
 
 const CourtDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -36,6 +39,10 @@ const CourtDetails: React.FC = () => {
         <div>
             <h1>{court.court_name}</h1>
             <p>Adres: {court.court_address}</p>
+            <BarChart courtId={court._id} />
+            <ResolvedCasesChart courtId={court._id} />
+            <CategoryChart courtId={court._id} />
+
             <h2>Statystyki</h2>
             <button
                 onClick={() => navigate(`/courts/${court._id}/statistics/add`)}
