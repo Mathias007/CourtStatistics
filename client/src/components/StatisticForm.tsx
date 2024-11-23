@@ -73,9 +73,9 @@ const StatisticForm: React.FC = () => {
     };
 
     return (
-        <div className="form-container">
+        <div className="form-wrapper">
             <h1>{statId ? "Edytuj statystykę" : "Dodaj nową statystykę"}</h1>
-            <form onSubmit={handleSubmit}>
+            <form className="form-container" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Rok</label>
                     <input
@@ -88,7 +88,7 @@ const StatisticForm: React.FC = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Kategoria</label>
+                    <label>Kategoria spraw</label>
                     <select
                         name="category"
                         className="form-input"
@@ -97,9 +97,9 @@ const StatisticForm: React.FC = () => {
                         required
                     >
                         <option value="">Wybierz kategorię</option>
-                        <option value="PENAL">Karne</option>
-                        <option value="CIVIL">Cywilne</option>
-                        <option value="LABOR">Pracy</option>
+                        <option value="PENAL">Prawo Karne</option>
+                        <option value="CIVIL">Prawo Cywilne</option>
+                        <option value="LABOR">Prawo Pracy</option>
                     </select>
                 </div>
                 <div className="form-group">
@@ -146,15 +146,17 @@ const StatisticForm: React.FC = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="form-button">
-                    {statId ? "Zatwierdź zmiany" : "Dodaj statystykę"}
-                </button>
-                <button
-                    onClick={() => navigate(`/courts/${courtId}`)}
-                    className="form-button form-button-cancel"
-                >
-                    Anuluj
-                </button>
+                <div className="form-buttons-group">
+                    <button type="submit" className="form-button">
+                        {statId ? "Zatwierdź zmiany" : "Dodaj statystykę"}
+                    </button>
+                    <button
+                        onClick={() => navigate(`/courts/${courtId}`)}
+                        className="form-button form-button-cancel"
+                    >
+                        Anuluj
+                    </button>
+                </div>
             </form>
         </div>
     );
