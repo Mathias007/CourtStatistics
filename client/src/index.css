@@ -74,17 +74,33 @@ button:focus-visible {
   }
 }
 
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Forms */
+
+.form-wrapper {
+  min-width: 50vw;
+}
+
 .form-container {
   background-color: #1e1e1e;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 600px;
   margin: 20px auto;
 }
 
 .form-group {
+  display: flex;
+  /* flex-direction: column; */
+  gap: 5%;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 15px;
 }
 
@@ -92,9 +108,23 @@ button:focus-visible {
   display: block;
   color: #c0c0c0;
   margin-bottom: 5px;
+  min-width: 20%;
+  text-align: left;
 }
 
-.form-input {
+.chart-filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-filter label {
+  color: #444;
+  font-weight: bold;
+  min-width: 20%;
+}
+
+.form-input, .chart-select {
   width: 100%;
   padding: 8px;
   border: 1px solid #444;
@@ -107,6 +137,13 @@ button:focus-visible {
   border-color: #646cff;
   outline: none;
   background-color: #333;
+}
+
+.form-buttons-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .form-button {
@@ -140,11 +177,18 @@ button:focus-visible {
   background-color: #1a1a1a;
 }
 
+.table-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
 .table th {
   background-color: #2e2e2e;
   color: #e0e0e0;
   padding: 10px;
-  text-align: left;
+  text-align: center;
   border-bottom: 2px solid #444;
 }
 
@@ -163,6 +207,12 @@ button:focus-visible {
   gap: 10px;
 }
 
+@media (max-width: 764px) {
+  .table-actions {
+    flex-direction: column;
+  }
+}
+
 .table-button {
   background-color: #3b3b3b;
   color: #e0e0e0;
@@ -175,4 +225,67 @@ button:focus-visible {
 
 .table-button:hover {
   background-color: #555;
+}
+
+/* toggle */
+
+.toggle-section {
+  display: flex;
+  flex-direction: column;
+
+  width: 95%;
+
+  margin-bottom: 20px;
+  border: 1px solid #232121;
+  border-radius: 8px;
+  background-color: #dad0d0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-section h3 {
+  color: #1a1a1a;
+}
+
+.toggle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #232121;
+}
+
+.toggle-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.toggle-header button {
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.toggle-content {
+  padding: 20px;
+}
+
+.charts-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.charts-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pie-chart {
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
 }
