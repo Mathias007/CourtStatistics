@@ -61,7 +61,7 @@ const BarChart: React.FC<BarChartProps> = ({ courtId }) => {
 
     return (
         <div>
-            <h2>Zaległości wejściowe i wyjściowe</h2>
+            <h3>Zaległości wejściowe i wyjściowe</h3>
             <Bar data={data} />
         </div>
     );

@@ -48,6 +48,7 @@ const CategoryChart: React.FC<CategoryChartProps> = ({ courtId }) => {
         labels: Object.keys(categories),
         datasets: [
             {
+                label: "",
                 data: Object.values(categories),
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.6)",
@@ -60,7 +61,7 @@ const CategoryChart: React.FC<CategoryChartProps> = ({ courtId }) => {
 
     return (
         <div>
-            <h2>Rozkład spraw według kategorii</h2>
+            <h3>Rozkład spraw według kategorii</h3>
             <Pie data={data} />
         </div>
     );
