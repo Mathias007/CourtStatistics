@@ -38,7 +38,7 @@ const CourtForm: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className="form-wrapper">
             <h1>{id ? "Edytuj sąd" : "Dodaj sąd"}</h1>
             <form className="form-container" onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -53,12 +53,12 @@ const CourtForm: React.FC = () => {
                                 court_name: e.target.value,
                             })
                         }
+                        required
                     />
                 </div>
                 <div className="form-group">
                     <label>Adres</label>
-                    <input
-                        type="text"
+                    <textarea
                         className="form-input"
                         value={formData.court_address}
                         onChange={(e) =>
@@ -67,11 +67,20 @@ const CourtForm: React.FC = () => {
                                 court_address: e.target.value,
                             })
                         }
+                        required
                     />
                 </div>
-                <button type="submit" className="form-button">
-                    Zapisz
-                </button>
+                <div className="form-buttons-group">
+                    <button type="submit" className="form-button">
+                        {id ? "Zatwierdź zmiany" : "Dodaj sąd"}
+                    </button>
+                    <button
+                        onClick={() => navigate("/")}
+                        className="form-button form-button-cancel"
+                    >
+                        Anuluj
+                    </button>
+                </div>
             </form>
         </div>
     );
