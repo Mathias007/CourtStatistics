@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import * as userService from "../services/User.service";
+
 import { ConfigVariables } from "../../config/ConfigVariables";
+import { ServerStatuses } from "../../config/ServerStatuses";
+import { UserMessages } from "../../config/ServerMessages";
+
+const { OK, CREATED, BAD_REQUEST, NOT_FOUND, INTERNAL_ERROR } = ServerStatuses;
 
 const JWT_SECRET = ConfigVariables.jwtSecret;
 
@@ -14,14 +19,16 @@ export const registerUser = async (
 
         if (!username || !email || !password) {
             return res
-                .status(400)
-                .json({ message: "Wszystkie pola są wymagane" });
+                .status(BAD_REQUEST)
+                .json({ message: UserMessages.ALL_FIELDS_REQUIRED });
         }
 
         const existingUser = await userService.getUserByEmail(email);
 
         if (existingUser) {
-            return res.status(400).json({ message: "Użytkownik już istnieje" });
+            return res
+                .status(BAD_REQUEST)
+                .json({ message: UserMessages.USER_ALREADY_EXISTS });
         }
 
         const newUser = await userService.createUser({
@@ -30,9 +37,14 @@ export const registerUser = async (
             password,
         });
 
-        res.status(201).json({ message: "Rejestracja zakończona sukcesem" });
+        res.status(CREATED).json({
+            message: UserMessages.REGISTRATION_SUCCESS,
+        });
     } catch (error) {
-        res.status(500).json({ message: "Błąd serwera", error });
+        res.status(INTERNAL_ERROR).json({
+            message: UserMessages.REGISTRATION_ERROR,
+            error,
+        });
     }
 };
 
@@ -46,8 +58,8 @@ export const loginUser = async (
         const user = await userService.getUserByEmail(email);
 
         if (!user) {
-            return res.status(400).json({
-                message: "Nie znaleziono użytkownika o podanym adresie email",
+            return res.status(BAD_REQUEST).json({
+                message: UserMessages.WRONG_EMAIL,
             });
         }
 
@@ -58,17 +70,20 @@ export const loginUser = async (
 
         if (!isPasswordValid) {
             return res
-                .status(400)
-                .json({ message: "Podano nieprawidłowe hasło" });
+                .status(BAD_REQUEST)
+                .json({ message: UserMessages.WRONG_PASSWORD });
         }
 
         const token = jwt.sign({ id: user._id }, JWT_SECRET, {
             expiresIn: "1h",
         });
 
-        res.status(200).json({ token });
+        res.status(OK).json({ token });
     } catch (error) {
-        res.status(500).json({ message: "Błąd serwera", error });
+        res.status(INTERNAL_ERROR).json({
+            message: UserMessages.LOGIN_ERROR,
+            error,
+        });
     }
 };
 
@@ -78,9 +93,12 @@ export const getUsers = async (
 ): Promise<Response | any> => {
     try {
         const users = await userService.getUsers();
-        res.status(200).json(users);
+        res.status(OK).json(users);
     } catch (error) {
-        res.status(500).json({ message: "Błąd serwera", error });
+        res.status(INTERNAL_ERROR).json({
+            message: UserMessages.GET_USERS_ERROR,
+            error,
+        });
     }
 };
 
@@ -93,13 +111,16 @@ export const getUserById = async (
 
         if (!user) {
             return res
-                .status(404)
-                .json({ message: "Użytkownik nie znaleziony" });
+                .status(NOT_FOUND)
+                .json({ message: UserMessages.USER_NOT_FOUND });
         }
 
-        res.status(200).json(user);
+        res.status(OK).json(user);
     } catch (error) {
-        res.status(500).json({ message: "Błąd serwera", error: error.message });
+        res.status(INTERNAL_ERROR).json({
+            message: UserMessages.GET_USER_ERROR,
+            error: error.message,
+        });
     }
 };
 
@@ -118,17 +139,20 @@ export const updateUser = async (
 
         if (!updatedUser) {
             return res
-                .status(404)
-                .json({ message: "Użytkownik nie znaleziony" });
+                .status(NOT_FOUND)
+                .json({ message: UserMessages.USER_NOT_FOUND });
         }
 
-        res.status(200).json({
+        res.status(OK).json({
             _id: updatedUser.id,
             username: updatedUser.username,
             email: updatedUser.email,
         });
     } catch (error) {
-        res.status(500).json({ message: "Błąd serwera", error: error.message });
+        res.status(INTERNAL_ERROR).json({
+            message: UserMessages.UPDATE_USER_ERROR,
+            error: error.message,
+        });
     }
 };
 
@@ -141,11 +165,16 @@ export const deleteUser = async (
         const deletedUser = await userService.deleteUser(id);
 
         if (deletedUser) {
-            res.status(200).json({ message: "Użytkownik usunięty" });
+            res.status(OK).json({ message: UserMessages.USER_DELETED });
         } else {
-            res.status(404).json({ message: "Użytkownik nie znaleziony" });
+            res.status(NOT_FOUND).json({
+                message: UserMessages.USER_NOT_FOUND,
+            });
         }
     } catch (error) {
-        res.status(500).json({ message: "Błąd serwera", error });
+        res.status(INTERNAL_ERROR).json({
+            message: UserMessages.DELETE_USER_ERROR,
+            error,
+        });
     }
 };

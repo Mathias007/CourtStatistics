@@ -7,6 +7,7 @@ const sampleUser = {
     email: "admin@example.com",
     password: "admin123",
 };
+
 export const seedUserCollection = async () => {
     try {
         const existingUser = await User.findOne({ email: sampleUser.email });

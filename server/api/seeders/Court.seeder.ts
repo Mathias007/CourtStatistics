@@ -57,13 +57,15 @@ export const seedCourtCollection = async () => {
 
         if (existingCourts.length === 0) {
             console.log(
-                "Baza danych jest pusta. Inicjalizowanie przykładowymi danymi..."
+                "Kolekcja danych sądów jest pusta. Inicjalizowanie przykładowymi danymi..."
             );
             await Court.insertMany(sampleCourts);
-            console.log("Baza danych została wypełniona przykładowymi danymi.");
+            console.log(
+                "Kolekcja danych sądów została wypełniona przykładowymi danymi."
+            );
         } else {
             console.log(
-                "Baza danych już zawiera dane, seeding nie jest potrzebny."
+                "Kolekcja danych sądów już zawiera dane, seeding nie jest potrzebny."
             );
         }
     } catch (error) {

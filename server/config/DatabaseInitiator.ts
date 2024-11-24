@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 
+import { DatabaseMessages } from "./ServerMessages";
 import { ConfigVariables } from "./ConfigVariables";
 const { connectionString } = ConfigVariables;
 
 const connectDB = async () => {
     try {
         await mongoose.connect(connectionString);
-        console.log("Połączono z bazą MongoDB");
+        console.log(DatabaseMessages.CONNECTION_SUCCESS);
     } catch (error) {
-        console.error("Wystąpił błąd połączenia z bazą MongoDB:", error);
+        console.error(DatabaseMessages.CONNECTION_ERROR, error);
         process.exit(1);
     }
 };

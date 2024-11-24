@@ -36,5 +36,5 @@ app.use(COURTS, CourtRouter);
 app.use(USERS, UserRouter);
 
 app.listen(portNumber, () => {
-    console.log(`Listening on ${portNumber}`);
+    console.log(`Serwer działa na porcie ${portNumber}`);
 });
