@@ -1,5 +1,7 @@
 import { Court, CourtDocument } from "../models/Court.model";
 
+import { DatabaseMessages } from "../../config/ServerMessages";
+
 const sampleCourts: CourtDocument[] = [
     {
         court_name: "Sąd Apelacyjny w Katowicach",
@@ -56,19 +58,13 @@ export const seedCourtCollection = async () => {
         const existingCourts = await Court.find();
 
         if (existingCourts.length === 0) {
-            console.log(
-                "Kolekcja danych sądów jest pusta. Inicjalizowanie przykładowymi danymi..."
-            );
+            console.log(DatabaseMessages.COURT_SEED_EMPTY);
             await Court.insertMany(sampleCourts);
-            console.log(
-                "Kolekcja danych sądów została wypełniona przykładowymi danymi."
-            );
+            console.log(DatabaseMessages.COURT_SEED_FILLED);
         } else {
-            console.log(
-                "Kolekcja danych sądów już zawiera dane, seeding nie jest potrzebny."
-            );
+            console.log(DatabaseMessages.COURT_SEED_UNNECESSARY);
         }
     } catch (error) {
-        console.error("Błąd podczas inicjalizacji bazy danych:", error);
+        console.error(DatabaseMessages.COURT_SEED_ERROR, error);
     }
 };

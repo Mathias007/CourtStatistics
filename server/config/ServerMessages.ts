@@ -39,4 +39,14 @@ export const AuthMiddlewareMessages = {
 export const DatabaseMessages = {
     CONNECTION_SUCCESS: "Połączono z bazą MongoDB",
     CONNECTION_ERROR: "Wystąpił błąd połączenia z bazą MongoDB:",
+    COURT_SEED_EMPTY:
+        "Kolekcja danych sądów jest pusta. Inicjalizowanie przykładowymi danymi...",
+    COURT_SEED_FILLED:
+        "Kolekcja danych sądów została wypełniona przykładowymi danymi.",
+    COURT_SEED_UNNECESSARY:
+        "Kolekcja danych sądów już zawiera dane, seeding nie jest potrzebny.",
+    COURT_SEED_ERROR: "Błąd podczas inicjalizacji kolekcji danych sądów:",
+    USER_SEED_FILLED: "Testowy użytkownik został zapisany.",
+    USER_SEED_UNNECESSARY: "Testowy użytkownik już istnieje.",
+    USER_SEED_ERROR: "Błąd podczas dodawania użytkownika:",
 };

@@ -2,6 +2,8 @@ import { BCRYPT_SALT_ROUNDS } from "../../config/ConfigVariables";
 import { User } from "../models/User.model";
 import bcrypt from "bcryptjs";
 
+import { DatabaseMessages } from "../../config/ServerMessages";
+
 const sampleUser = {
     username: "Admin",
     email: "admin@example.com",
@@ -25,11 +27,11 @@ export const seedUserCollection = async () => {
             });
 
             await newUser.save();
-            console.log("Testowy użytkownik został zapisany.");
+            console.log(DatabaseMessages.USER_SEED_FILLED);
         } else {
-            console.log("Testowy użytkownik już istnieje.");
+            console.log(DatabaseMessages.USER_SEED_UNNECESSARY);
         }
     } catch (error) {
-        console.error("Błąd podczas dodawania użytkownika:", error);
+        console.error(DatabaseMessages.USER_SEED_ERROR, error);
     }
 };
