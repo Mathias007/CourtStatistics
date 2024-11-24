@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 
 import CourtList from "./components/court/CourtList";
 import CourtForm from "./components/court/CourtForm";
 import CourtDetails from "./components/court/CourtDetails";
 import StatisticForm from "./components/court/StatisticForm";
-
 import RegisterForm from "./components/user/RegisterForm";
 import LoginForm from "./components/user/LoginForm";
 import ProtectedRoute from "./components/general/ProtectedRoute";
@@ -16,41 +16,42 @@ import UserDetails from "./components/user/UserDetails";
 import NotFound from "./components/general/NotFound";
 
 const App: React.FC = () => {
-    const isAuthenticated = !!localStorage.getItem("token");
-
     return (
-        <Router>
-            <Routes>
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/register" element={<RegisterForm />} />
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    <Route path="/login" element={<LoginForm />} />
+                    <Route path="/register" element={<RegisterForm />} />
 
-                <Route
-                    path="/"
-                    element={
-                        <ProtectedRoute isAuthenticated={isAuthenticated} />
-                    }
-                >
-                    <Route path="/" element={<CourtList />} />
-                    <Route path="/courts/add" element={<CourtForm />} />
-                    <Route path="/courts/edit/:id" element={<CourtForm />} />
-                    <Route path="/courts/:id" element={<CourtDetails />} />
-                    <Route
-                        path="/courts/:courtId/statistics/add"
-                        element={<StatisticForm />}
-                    />
-                    <Route
-                        path="/courts/:courtId/statistics/edit/:statId"
-                        element={<StatisticForm />}
-                    />
-                    <Route path="/users" element={<UserList />} />
-                    <Route path="/users/add" element={<AddUserForm />} />
-                    <Route path="/users/:id" element={<UserDetails />} />
-                    <Route path="/users/edit/:id" element={<EditUserForm />} />
-                </Route>
+                    <Route path="/" element={<ProtectedRoute />}>
+                        <Route path="/" element={<CourtList />} />
+                        <Route path="/courts/add" element={<CourtForm />} />
+                        <Route
+                            path="/courts/edit/:id"
+                            element={<CourtForm />}
+                        />
+                        <Route path="/courts/:id" element={<CourtDetails />} />
+                        <Route
+                            path="/courts/:courtId/statistics/add"
+                            element={<StatisticForm />}
+                        />
+                        <Route
+                            path="/courts/:courtId/statistics/edit/:statId"
+                            element={<StatisticForm />}
+                        />
+                        <Route path="/users" element={<UserList />} />
+                        <Route path="/users/add" element={<AddUserForm />} />
+                        <Route path="/users/:id" element={<UserDetails />} />
+                        <Route
+                            path="/users/edit/:id"
+                            element={<EditUserForm />}
+                        />
+                    </Route>
 
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-        </Router>
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </Router>
+        </AuthProvider>
     );
 };
 

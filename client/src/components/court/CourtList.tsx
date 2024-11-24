@@ -26,7 +26,13 @@ const CourtList: React.FC = () => {
         setCourts(courts.filter((court) => court._id !== courtId));
     };
 
-    if (!courts.length) return <p>Wczytywanie...</p>;
+    if (!courts.length)
+        return (
+            <div>
+                <p>Wczytywanie... </p>
+                <LogoutButton />
+            </div>
+        );
 
     return (
         <div className="dashboard-wrapper">
