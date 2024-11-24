@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -9,15 +8,19 @@ import { ConfigVariables } from "./config/ConfigVariables";
 import { ServerPaths } from "./config/ServerPaths";
 
 import CourtRouter from "./api/routes/Court.route";
-import { seedDatabase } from "./api/seeders/Court.seeder";
+import UserRouter from "./api/routes/User.route";
 
-const { clientURL, jwtSecret, portNumber } = ConfigVariables;
-const { ROOT, COURTS } = ServerPaths;
+import { seedCourtCollection } from "./api/seeders/Court.seeder";
+import { seedUserCollection } from "./api/seeders/User.seeder";
+
+const { clientURL, portNumber } = ConfigVariables;
+const { USERS, COURTS } = ServerPaths;
 
 const app = express();
 
 connectDB().then(() => {
-    seedDatabase();
+    seedCourtCollection();
+    seedUserCollection();
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,6 +33,7 @@ app.use(
 );
 
 app.use(COURTS, CourtRouter);
+app.use(USERS, UserRouter);
 
 app.listen(portNumber, () => {
     console.log(`Listening on ${portNumber}`);
