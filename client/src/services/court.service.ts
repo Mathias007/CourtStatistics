@@ -2,7 +2,14 @@ import axios from "axios";
 import { Court, CourtStatistic } from "../models/court.model";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "";
-// const COURTS_URL = `${API_URL}/courts`;
+
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
 
 export const getCourts = async (): Promise<Court[]> => {
     const response = await axios.get(`${API_BASE_URL}/courts`);

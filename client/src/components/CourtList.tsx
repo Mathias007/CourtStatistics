@@ -7,6 +7,7 @@ import PieChartForCourts from "./charts/CourtsPieComparision";
 import ToggleSection from "./ToggleSection";
 import IncomeCasesComparision from "./charts/IncomeCasesComparision";
 import ResolvedCasesComparison from "./charts/ResolvedCasesComparision";
+import LogoutButton from "./LogoutButton";
 
 const CourtList: React.FC = () => {
     const [courts, setCourts] = useState<Court[]>([]);
@@ -29,7 +30,10 @@ const CourtList: React.FC = () => {
 
     return (
         <div className="dashboard-wrapper">
-            <h1>Lista sądów</h1>
+            <div className="dashboard-header">
+                <h1>Lista sądów</h1>
+                <LogoutButton />
+            </div>
             <ToggleSection title="Tabela">
                 <div className="table-buttons">
                     <button
