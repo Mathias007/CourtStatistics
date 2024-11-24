@@ -51,7 +51,7 @@ const sampleCourts: CourtDocument[] = [
     },
 ] as CourtDocument[];
 
-export const seedDatabase = async () => {
+export const seedCourtCollection = async () => {
     try {
         const existingCourts = await Court.find();
 

@@ -1,5 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+import { DatabaseModels } from "../../config/DatabaseModels";
+
 export enum StatisticCategory {
     PENAL = "PENAL",
     CIVIL = "CIVIL",
@@ -46,4 +48,7 @@ const CourtSchema = new Schema<CourtDocument>({
     statistics: [StatisticSchema],
 });
 
-export const Court = mongoose.model<CourtDocument>("Court", CourtSchema);
+export const Court = mongoose.model<CourtDocument>(
+    DatabaseModels.COURT,
+    CourtSchema
+);
