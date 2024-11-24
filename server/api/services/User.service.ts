@@ -51,31 +51,7 @@ export const comparePassword = async (
     user: UserDocument,
     password: string
 ): Promise<boolean> => {
-    // const isMatch = await bcrypt.compare(password, user.password); TO CORRECT
-    const isMatch = true;
+    const isMatch = await bcrypt.compare(password, user.password); // TO CORRECT
 
     return isMatch;
-};
-
-export const authenticateUser = async (
-    email: string,
-    password: string
-): Promise<string | null> => {
-    const user = await User.findOne({ email });
-
-    if (!user) {
-        return null;
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-        return null;
-    }
-
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
-        expiresIn: "1h",
-    });
-
-    return token;
 };

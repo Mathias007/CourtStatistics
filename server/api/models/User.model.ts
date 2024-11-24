@@ -21,17 +21,17 @@ const UserSchema: Schema<IUser> = new Schema(
     {
         username: { type: String, required: true, unique: true },
         email: { type: String, required: true, unique: true },
-        password: { type: String, required: true },
+        password: { type: String, required: true, maxlength: 60 },
     },
     { timestamps: true }
 );
 
-UserSchema.pre<IUser>("save", async function (next) {
-    if (!this.isModified("password")) return next();
-    const salt = await bcrypt.genSalt(BCRYPT_SALT_ROUNDS);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-});
+// UserSchema.pre<IUser>("save", async function (next) {
+//     if (!this.isModified("password")) return next();
+//     const salt = await bcrypt.genSalt(BCRYPT_SALT_ROUNDS);
+//     this.password = await bcrypt.hash(this.password, salt);
+//     next();
+// });
 
 UserSchema.methods.comparePassword = function (
     candidatePassword: string
