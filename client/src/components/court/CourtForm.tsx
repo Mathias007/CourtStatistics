@@ -4,7 +4,7 @@ import {
     createCourt,
     updateCourt,
     getCourtById,
-} from "../services/court.service";
+} from "../../services/court.service";
 
 const CourtForm: React.FC = () => {
     const { id } = useParams<{ id?: string }>();

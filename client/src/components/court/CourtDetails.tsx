@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Court } from "../models/court.model";
-import { getCourtById, deleteStatistic } from "../services/court.service";
+import { Court } from "../../models/court.model";
+import { getCourtById, deleteStatistic } from "../../services/court.service";
 
-import BarChart from "./charts/BarChart";
-import CategoryChart from "./charts/CategoryChart";
-import ResolvedCasesChart from "./charts/ResolvedCasesChart";
-import ToggleSection from "./ToggleSection";
+import BarChart from "../charts/BarChart";
+import CategoryChart from "../charts/CategoryChart";
+import ResolvedCasesChart from "../charts/ResolvedCasesChart";
+import ToggleSection from "../general/ToggleSection";
 
 const CourtDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();

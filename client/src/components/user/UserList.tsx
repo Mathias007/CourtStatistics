@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserList, deleteUser } from "../services/user.service";
-import { User } from "../models/user.model";
+import { getUserList, deleteUser } from "../../services/user.service";
+import { User } from "../../models/user.model";
 import LogoutButton from "./LogoutButton";
-import ToggleSection from "./ToggleSection";
+import ToggleSection from "../general/ToggleSection";
 
 const UserList: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);

@@ -4,7 +4,7 @@ import {
     addStatisticToCourt,
     updateStatistic,
     getCourtById,
-} from "../services/court.service";
+} from "../../services/court.service";
 
 const StatisticForm: React.FC = () => {
     const { courtId, statId } = useParams<{

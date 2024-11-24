@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Court } from "../models/court.model";
-import { getCourts, deleteCourt } from "../services/court.service";
+import { Court } from "../../models/court.model";
+import { getCourts, deleteCourt } from "../../services/court.service";
 
-import PieChartForCourts from "./charts/CourtsPieComparision";
-import ToggleSection from "./ToggleSection";
-import IncomeCasesComparision from "./charts/IncomeCasesComparision";
-import ResolvedCasesComparison from "./charts/ResolvedCasesComparision";
-import LogoutButton from "./LogoutButton";
+import PieChartForCourts from "../charts/CourtsPieComparision";
+import ToggleSection from "../general/ToggleSection";
+import IncomeCasesComparision from "../charts/IncomeCasesComparision";
+import ResolvedCasesComparison from "../charts/ResolvedCasesComparision";
+import LogoutButton from "../user/LogoutButton";
 
 const CourtList: React.FC = () => {
     const [courts, setCourts] = useState<Court[]>([]);

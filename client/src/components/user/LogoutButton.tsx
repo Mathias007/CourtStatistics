@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../services/user.service";
+import { logout } from "../../services/user.service";
 
 const LogoutButton: React.FC = () => {
     const navigate = useNavigate();

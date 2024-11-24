@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/user.service";
+import { register } from "../../services/user.service";
 
-const LoginForm = () => {
+const AddUserForm: React.FC = () => {
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -10,19 +11,28 @@ const LoginForm = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const token = await login(email, password);
-            localStorage.setItem("token", token);
-            navigate("/");
+            await register({ username, email, password });
+            navigate("/users");
         } catch (error) {
-            console.error("Błąd logowania:", error);
+            console.error("Błąd dodawania użytkownika:", error);
         }
     };
 
     return (
         <div className="form-wrapper">
-            <h1>Logowanie</h1>
-
+            <h1>Dodaj użytkownika</h1>
             <form className="form-container" onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>Nazwa</label>
+                    <input
+                        type="text"
+                        className="form-input"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Nazwa użytkownika"
+                        required
+                    />
+                </div>
                 <div className="form-group">
                     <label>Adres email</label>
                     <input
@@ -30,13 +40,12 @@ const LoginForm = () => {
                         className="form-input"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
+                        placeholder="Adres email"
                         required
                     />
                 </div>
                 <div className="form-group">
                     <label>Hasło</label>
-
                     <input
                         type="password"
                         className="form-input"
@@ -46,10 +55,18 @@ const LoginForm = () => {
                         required
                     />
                 </div>
-                <button type="submit">Zaloguj</button>
+                <div className="form-buttons-group">
+                    <button type="submit">Dodaj użytkownika</button>
+                    <button
+                        onClick={() => navigate("/users")}
+                        className="form-button form-button-cancel"
+                    >
+                        Anuluj
+                    </button>
+                </div>
             </form>
         </div>
     );
 };
 
-export default LoginForm;
+export default AddUserForm;
