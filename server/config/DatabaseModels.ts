@@ -1,4 +1,6 @@
-export const DatabaseModels = {
+const DatabaseModels = {
     COURT: "Court",
     USER: "User",
 };
+
+export default DatabaseModels;

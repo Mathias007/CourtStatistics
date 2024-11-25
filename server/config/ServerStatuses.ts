@@ -1,4 +1,4 @@
-export const ServerStatuses = {
+const ServerStatuses = {
     OK: 200,
     CREATED: 201,
     ACCEPTED: 202,
@@ -10,3 +10,5 @@ export const ServerStatuses = {
     INTERNAL_ERROR: 500,
     BAD_GATEWAY: 502,
 };
+
+export default ServerStatuses;
