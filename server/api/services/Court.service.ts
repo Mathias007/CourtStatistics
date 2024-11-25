@@ -1,31 +1,33 @@
-import { Court, CourtDocument } from "../models/Court.model";
+import { CourtModel } from "../models";
 
-export const getCourts = async (): Promise<CourtDocument[]> => {
-    return Court.find();
+export const getCourts = async (): Promise<CourtModel.CourtDocument[]> => {
+    return CourtModel.Court.find();
 };
 
 export const getCourtById = async (
     id: string
-): Promise<CourtDocument | null> => {
-    return Court.findById(id);
+): Promise<CourtModel.CourtDocument | null> => {
+    return CourtModel.Court.findById(id);
 };
 
 export const createCourt = async (
-    data: CourtDocument
-): Promise<CourtDocument> => {
-    const court = new Court(data);
+    data: CourtModel.CourtDocument
+): Promise<CourtModel.CourtDocument> => {
+    const court = new CourtModel.Court(data);
     return court.save();
 };
 
 export const updateCourt = async (
     id: string,
-    data: Partial<CourtDocument>
-): Promise<CourtDocument | null> => {
-    return Court.findByIdAndUpdate(id, data, { new: true });
+    data: Partial<CourtModel.CourtDocument>
+): Promise<CourtModel.CourtDocument | null> => {
+    return CourtModel.Court.findByIdAndUpdate(id, data, { new: true });
 };
 
 export const deleteCourt = async (
     id: string
-): Promise<CourtDocument | null> => {
-    return Court.findByIdAndDelete(id) as unknown as CourtDocument | null;
+): Promise<CourtModel.CourtDocument | null> => {
+    return CourtModel.Court.findByIdAndDelete(
+        id
+    ) as unknown as CourtModel.CourtDocument | null;
 };
