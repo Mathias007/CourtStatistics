@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    createCourt,
-    updateCourt,
-    getCourtById,
-} from "../../services/court.service";
+
+import { CourtService } from "../../services";
 
 const CourtForm: React.FC = () => {
     const { id } = useParams<{ id?: string }>();
@@ -17,7 +14,7 @@ const CourtForm: React.FC = () => {
     useEffect(() => {
         if (id) {
             const fetchData = async () => {
-                const court = await getCourtById(id);
+                const court = await CourtService.getCourtById(id);
                 setFormData({
                     court_name: court.court_name,
                     court_address: court.court_address,
@@ -30,9 +27,9 @@ const CourtForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (id) {
-            await updateCourt(id, formData);
+            await CourtService.updateCourt(id, formData);
         } else {
-            await createCourt(formData);
+            await CourtService.createCourt(formData);
         }
         navigate("/");
     };

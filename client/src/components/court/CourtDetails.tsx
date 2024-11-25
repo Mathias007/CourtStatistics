@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Court } from "../../models/court.model";
-import { getCourtById, deleteStatistic } from "../../services/court.service";
 
-import BarChart from "../charts/BarChart";
-import CategoryChart from "../charts/CategoryChart";
-import ResolvedCasesChart from "../charts/ResolvedCasesChart";
-import ToggleSection from "../general/ToggleSection";
+import { BarChart, CategoryChart, ResolvedCasesChart } from "../charts";
+import { Loading, ToggleSection } from "../general";
+
+import { CourtService } from "../../services";
+import { CourtModel } from "../../models";
 
 const CourtDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const [court, setCourt] = useState<Court | null>(null);
+    const [court, setCourt] = useState<CourtModel.Court | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourt = async () => {
             if (id) {
-                const data = await getCourtById(id);
+                const data = await CourtService.getCourtById(id);
                 setCourt(data);
             }
         };
@@ -25,7 +24,7 @@ const CourtDetails: React.FC = () => {
 
     const handleDeleteStatistic = async (courtId: string, statId: number) => {
         if (court) {
-            await deleteStatistic(courtId, statId);
+            await CourtService.deleteStatistic(courtId, statId);
             setCourt({
                 ...court,
                 statistics: court.statistics.filter(
@@ -35,7 +34,7 @@ const CourtDetails: React.FC = () => {
         }
     };
 
-    if (!court) return <p>Wczytywanie...</p>;
+    if (!court) return <Loading />;
 
     return (
         <div className="dashboard-wrapper">

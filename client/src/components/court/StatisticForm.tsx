@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    addStatisticToCourt,
-    updateStatistic,
-    getCourtById,
-} from "../../services/court.service";
+
+import { CourtService } from "../../services";
 
 const StatisticForm: React.FC = () => {
     const { courtId, statId } = useParams<{
@@ -24,7 +21,7 @@ const StatisticForm: React.FC = () => {
     useEffect(() => {
         const fetchCourtData = async () => {
             if (courtId && statId) {
-                const court = await getCourtById(courtId);
+                const court = await CourtService.getCourtById(courtId);
                 const statistic = court.statistics.find(
                     (s) => s.id === Number(statId)
                 );
@@ -47,9 +44,13 @@ const StatisticForm: React.FC = () => {
         e.preventDefault();
         if (courtId) {
             if (statId) {
-                await updateStatistic(courtId, parseInt(statId), formData);
+                await CourtService.updateStatistic(
+                    courtId,
+                    parseInt(statId),
+                    formData
+                );
             } else {
-                await addStatisticToCourt(courtId, formData);
+                await CourtService.addStatisticToCourt(courtId, formData);
             }
             navigate(`/courts/${courtId}`);
         }

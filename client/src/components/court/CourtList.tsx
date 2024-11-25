@@ -1,35 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Court } from "../../models/court.model";
-import { getCourts, deleteCourt } from "../../services/court.service";
 
-import PieChartForCourts from "../charts/CourtsPieComparision";
-import ToggleSection from "../general/ToggleSection";
-import IncomeCasesComparision from "../charts/IncomeCasesComparision";
-import ResolvedCasesComparison from "../charts/ResolvedCasesComparision";
-import LogoutButton from "../user/LogoutButton";
+import {
+    CourtsPieComparision,
+    IncomeCasesComparision,
+    ResolvedCasesComparision,
+} from "../charts";
+import { Loading, ToggleSection } from "../general";
+import { LogoutButton } from "../user";
+
+import { CourtService } from "../../services";
+import { CourtModel } from "../../models";
 
 const CourtList: React.FC = () => {
-    const [courts, setCourts] = useState<Court[]>([]);
+    const [courts, setCourts] = useState<CourtModel.Court[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourts = async () => {
-            const data = await getCourts();
+            const data = await CourtService.getCourts();
             setCourts(data);
         };
         fetchCourts();
     }, []);
 
     const handleDelete = async (courtId: string) => {
-        await deleteCourt(courtId);
+        await CourtService.deleteCourt(courtId);
         setCourts(courts.filter((court) => court._id !== courtId));
     };
 
     if (!courts.length)
         return (
             <div>
-                <p>Wczytywanie... </p>
+                <Loading />
                 <LogoutButton />
             </div>
         );
@@ -98,8 +101,8 @@ const CourtList: React.FC = () => {
             <ToggleSection title="Wykresy">
                 <div className="charts-section">
                     <IncomeCasesComparision courts={courts} />
-                    <ResolvedCasesComparison courts={courts} />
-                    <PieChartForCourts courts={courts} />
+                    <ResolvedCasesComparision courts={courts} />
+                    <CourtsPieComparision courts={courts} />
                 </div>
             </ToggleSection>
         </div>
