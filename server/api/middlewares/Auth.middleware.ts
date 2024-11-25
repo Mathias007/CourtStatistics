@@ -1,15 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-import { ConfigVariables } from "../../config/ConfigVariables";
-import { ServerStatuses } from "../../config/ServerStatuses";
-import { AuthMiddlewareMessages } from "../../config/ServerMessages";
+import { ConfigVariables, ServerStatuses, ServerMessages } from "../../config";
+const { AuthMiddlewareMessages } = ServerMessages;
 
 const { UNAUTHORIZED } = ServerStatuses;
 
 const JWT_SECRET = ConfigVariables.jwtSecret;
 
-export const authMiddleware = (
+export const authorize = (
     req: Request,
     res: Response,
     next: NextFunction
