@@ -1,26 +1,20 @@
 import express from "express";
-
 import cors from "cors";
 import bodyParser from "body-parser";
-import connectDB from "./config/DatabaseInitiator";
 
-import { ConfigVariables } from "./config/ConfigVariables";
-import { ServerPaths } from "./config/ServerPaths";
+import { ConfigVariables, ServerPaths, DatabaseInitiator } from "./config";
 
-import CourtRouter from "./api/routes/Court.route";
-import UserRouter from "./api/routes/User.route";
-
-import { seedCourtCollection } from "./api/seeders/Court.seeder";
-import { seedUserCollection } from "./api/seeders/User.seeder";
+import { CourtRouter, UserRouter } from "./api/routes";
+import { CourtSeeder, UserSeeder } from "./api/seeders";
 
 const { clientURL, portNumber } = ConfigVariables;
 const { USERS, COURTS } = ServerPaths;
 
 const app = express();
 
-connectDB().then(() => {
-    seedCourtCollection();
-    seedUserCollection();
+DatabaseInitiator().then(() => {
+    CourtSeeder.seedCourtCollection();
+    UserSeeder.seedUserCollection();
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
