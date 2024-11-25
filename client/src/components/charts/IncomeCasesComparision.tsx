@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { Court } from "../../models/court.model";
 import {
     Chart as ChartJS,
     Title,
@@ -10,6 +9,8 @@ import {
     CategoryScale,
     LinearScale,
 } from "chart.js";
+
+import { CourtModel } from "../../models";
 
 ChartJS.register(
     Title,
@@ -21,7 +22,7 @@ ChartJS.register(
 );
 
 interface IncomeCasesComparisionProps {
-    courts: Court[];
+    courts: CourtModel.Court[];
 }
 
 const IncomeCasesComparision: React.FC<IncomeCasesComparisionProps> = ({

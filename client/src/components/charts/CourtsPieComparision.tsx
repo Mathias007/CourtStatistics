@@ -1,9 +1,10 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
-import { Court } from "../../models/court.model";
+
+import { CourtModel } from "../../models";
 
 interface PieChartForCourtsProps {
-    courts: Court[];
+    courts: CourtModel.Court[];
 }
 
 const PieChartForCourts: React.FC<PieChartForCourtsProps> = ({ courts }) => {

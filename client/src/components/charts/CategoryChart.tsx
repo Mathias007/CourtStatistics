@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Pie } from "react-chartjs-2";
-import { getCourtById } from "../../services/court.service";
-import { Court } from "../../models/court.model";
 import {
     Chart as ChartJS,
     Title,
@@ -11,6 +9,9 @@ import {
     CategoryScale,
     LinearScale,
 } from "chart.js";
+
+import { CourtService } from "../../services";
+import { CourtModel } from "../../models";
 
 ChartJS.register(
     Title,
@@ -26,11 +27,11 @@ interface CategoryChartProps {
 }
 
 const CategoryChart: React.FC<CategoryChartProps> = ({ courtId }) => {
-    const [court, setCourt] = useState<Court | null>(null);
+    const [court, setCourt] = useState<CourtModel.Court | null>(null);
 
     useEffect(() => {
         const fetchCourtData = async () => {
-            const data = await getCourtById(courtId);
+            const data = await CourtService.getCourtById(courtId);
             setCourt(data);
         };
 
