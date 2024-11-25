@@ -1,8 +1,9 @@
-import { Court, CourtDocument } from "../models/Court.model";
+import { CourtModel } from "../models";
 
-import { DatabaseMessages } from "../../config/ServerMessages";
+import { ServerMessages } from "../../config";
+const { DatabaseMessages } = ServerMessages;
 
-const sampleCourts: CourtDocument[] = [
+const sampleCourts: CourtModel.CourtDocument[] = [
     {
         court_name: "Sąd Apelacyjny w Katowicach",
         court_address: "al. Wojciecha Korfantego 117/119, 40-156 Katowice",
@@ -51,15 +52,15 @@ const sampleCourts: CourtDocument[] = [
             },
         ],
     },
-] as CourtDocument[];
+] as CourtModel.CourtDocument[];
 
 export const seedCourtCollection = async () => {
     try {
-        const existingCourts = await Court.find();
+        const existingCourts = await CourtModel.Court.find();
 
         if (existingCourts.length === 0) {
             console.log(DatabaseMessages.COURT_SEED_EMPTY);
-            await Court.insertMany(sampleCourts);
+            await CourtModel.Court.insertMany(sampleCourts);
             console.log(DatabaseMessages.COURT_SEED_FILLED);
         } else {
             console.log(DatabaseMessages.COURT_SEED_UNNECESSARY);
