@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import * as userService from "../services/User.service";
+import { UserService } from "../services";
 
-import { ConfigVariables } from "../../config/ConfigVariables";
-import { ServerStatuses } from "../../config/ServerStatuses";
-import { UserMessages } from "../../config/ServerMessages";
+import { ConfigVariables, ServerMessages, ServerStatuses } from "../../config";
+const { UserMessages } = ServerMessages;
 
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND, INTERNAL_ERROR } = ServerStatuses;
 
@@ -23,7 +22,7 @@ export const registerUser = async (
                 .json({ message: UserMessages.ALL_FIELDS_REQUIRED });
         }
 
-        const existingUser = await userService.getUserByEmail(email);
+        const existingUser = await UserService.getUserByEmail(email);
 
         if (existingUser) {
             return res
@@ -31,7 +30,7 @@ export const registerUser = async (
                 .json({ message: UserMessages.USER_ALREADY_EXISTS });
         }
 
-        const newUser = await userService.createUser({
+        const newUser = await UserService.createUser({
             username,
             email,
             password,
@@ -55,7 +54,7 @@ export const loginUser = async (
     try {
         const { email, password } = req.body;
 
-        const user = await userService.getUserByEmail(email);
+        const user = await UserService.getUserByEmail(email);
 
         if (!user) {
             return res.status(BAD_REQUEST).json({
@@ -63,7 +62,7 @@ export const loginUser = async (
             });
         }
 
-        const isPasswordValid = await userService.comparePassword(
+        const isPasswordValid = await UserService.comparePassword(
             user,
             password
         );
@@ -92,7 +91,7 @@ export const getUsers = async (
     res: Response
 ): Promise<Response | any> => {
     try {
-        const users = await userService.getUsers();
+        const users = await UserService.getUsers();
         res.status(OK).json(users);
     } catch (error) {
         res.status(INTERNAL_ERROR).json({
@@ -107,7 +106,7 @@ export const getUserById = async (
     res: Response
 ): Promise<Response | any> => {
     try {
-        const user = await userService.getUserById(req.params.id);
+        const user = await UserService.getUserById(req.params.id);
 
         if (!user) {
             return res
@@ -132,7 +131,7 @@ export const updateUser = async (
         const { id } = req.params;
         const { username, email } = req.body;
 
-        const updatedUser = await userService.updateUser(id, {
+        const updatedUser = await UserService.updateUser(id, {
             username,
             email,
         });
@@ -162,7 +161,7 @@ export const deleteUser = async (
 ): Promise<Response | any> => {
     try {
         const { id } = req.params;
-        const deletedUser = await userService.deleteUser(id);
+        const deletedUser = await UserService.deleteUser(id);
 
         if (deletedUser) {
             res.status(OK).json({ message: UserMessages.USER_DELETED });

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import * as courtService from "../services/Court.service";
+import { CourtService } from "../services";
 
-import { ServerStatuses } from "../../config/ServerStatuses";
-import { CourtMessages } from "../../config/ServerMessages";
+import { ServerStatuses, ServerMessages } from "../../config";
+const { CourtMessages } = ServerMessages;
 
 const { OK, CREATED, NOT_FOUND, INTERNAL_ERROR } = ServerStatuses;
 
@@ -11,7 +11,7 @@ export const getCourts = async (
     res: Response
 ): Promise<Response | any> => {
     try {
-        const courts = await courtService.getCourts();
+        const courts = await CourtService.getCourts();
         res.status(OK).json(courts);
     } catch (error) {
         res.status(INTERNAL_ERROR).json({
@@ -26,7 +26,7 @@ export const getCourtById = async (
     res: Response
 ): Promise<Response | any> => {
     try {
-        const court = await courtService.getCourtById(req.params.id);
+        const court = await CourtService.getCourtById(req.params.id);
 
         if (court) {
             res.status(OK).json(court);
@@ -50,7 +50,7 @@ export const getStatisticsByCourt = async (
     const { courtId, year, category } = req.params;
 
     try {
-        const court = await courtService.getCourtById(courtId);
+        const court = await CourtService.getCourtById(courtId);
         if (!court)
             return res
                 .status(NOT_FOUND)
@@ -80,7 +80,7 @@ export const createCourt = async (
     req: Request,
     res: Response
 ): Promise<Response | any> => {
-    const court = await courtService.createCourt(req.body);
+    const court = await CourtService.createCourt(req.body);
     res.status(CREATED).json(court);
 };
 
@@ -92,7 +92,7 @@ export const addStatisticToCourt = async (
     const newStatistic = req.body;
 
     try {
-        const court = await courtService.getCourtById(courtId);
+        const court = await CourtService.getCourtById(courtId);
         if (!court)
             return res
                 .status(NOT_FOUND)
@@ -117,7 +117,7 @@ export const updateCourt = async (
     req: Request,
     res: Response
 ): Promise<Response | any> => {
-    const court = await courtService.updateCourt(req.params.id, req.body);
+    const court = await CourtService.updateCourt(req.params.id, req.body);
     if (court) {
         res.status(OK).json(court);
     } else {
@@ -133,7 +133,7 @@ export const updateStatisticById = async (
     const updatedData = req.body;
 
     try {
-        const court = await courtService.getCourtById(courtId);
+        const court = await CourtService.getCourtById(courtId);
         if (!court)
             return res
                 .status(NOT_FOUND)
@@ -164,7 +164,7 @@ export const deleteCourt = async (
     req: Request,
     res: Response
 ): Promise<Response | any> => {
-    const court = await courtService.deleteCourt(req.params.id);
+    const court = await CourtService.deleteCourt(req.params.id);
     if (court) {
         res.status(OK).json({ message: CourtMessages.COURT_DELETED });
     } else {
@@ -179,7 +179,7 @@ export const deleteStatisticById = async (
     const { courtId, statisticId } = req.params;
 
     try {
-        const court = await courtService.getCourtById(courtId);
+        const court = await CourtService.getCourtById(courtId);
         if (!court)
             return res
                 .status(NOT_FOUND)
@@ -214,7 +214,7 @@ export const addStatistic = async (
     const newStatistic = req.body;
 
     try {
-        const court = await courtService.getCourtById(courtId);
+        const court = await CourtService.getCourtById(courtId);
         if (!court)
             return res
                 .status(NOT_FOUND)
