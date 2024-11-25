@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-import { DatabaseModels } from "../../config/DatabaseModels";
+import { DatabaseModels } from "../../config";
 
 export enum StatisticCategory {
     PENAL = "PENAL",
