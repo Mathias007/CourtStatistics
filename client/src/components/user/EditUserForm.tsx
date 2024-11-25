@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUserById, updateUser } from "../../services/user.service";
-import { User } from "../../models/user.model";
+
+import { UserService } from "../../services";
+import { UserModel } from "../../models";
+import { Loading } from "../general";
 
 const EditUserForm: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserModel.User | null>(null);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const navigate = useNavigate();
@@ -13,7 +15,7 @@ const EditUserForm: React.FC = () => {
     useEffect(() => {
         const fetchUser = async () => {
             if (id) {
-                const userData = await getUserById(id);
+                const userData = await UserService.getUserById(id);
                 setUser(userData);
                 setUsername(userData.username);
                 setEmail(userData.email);
@@ -26,7 +28,7 @@ const EditUserForm: React.FC = () => {
         e.preventDefault();
         try {
             if (id) {
-                await updateUser(id, { username, email });
+                await UserService.updateUser(id, { username, email });
                 navigate("/users");
             }
         } catch (error) {
@@ -34,7 +36,7 @@ const EditUserForm: React.FC = () => {
         }
     };
 
-    if (!user) return <p>Wczytywanie...</p>;
+    if (!user) return <Loading />;
 
     return (
         <div className="form-wrapper">

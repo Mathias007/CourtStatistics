@@ -1,28 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserList, deleteUser } from "../../services/user.service";
-import { User } from "../../models/user.model";
-import LogoutButton from "./LogoutButton";
-import ToggleSection from "../general/ToggleSection";
+
+import { LogoutButton } from ".";
+import { Loading, ToggleSection } from "../general";
+
+import { UserService } from "../../services";
+import { UserModel } from "../../models";
 
 const UserList: React.FC = () => {
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<UserModel.User[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const data = await getUserList();
+            const data = await UserService.getUserList();
             setUsers(data);
         };
         fetchUsers();
     }, []);
 
     const handleDelete = async (userId: string) => {
-        await deleteUser(userId);
+        await UserService.deleteUser(userId);
         setUsers(users.filter((user) => user._id !== userId));
     };
 
-    if (!users.length) return <p>Wczytywanie...</p>;
+    if (!users.length) return <Loading />;
 
     return (
         <div className="dashboard-wrapper">

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../../services/user.service";
 
-const RegisterForm = () => {
+import { UserService } from "../../services";
+
+const RegisterForm: React.FC = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -11,7 +12,7 @@ const RegisterForm = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await register({ username, email, password });
+            await UserService.register({ username, email, password });
             navigate("/login");
         } catch (error) {
             console.error("Błąd rejestracji:", error);

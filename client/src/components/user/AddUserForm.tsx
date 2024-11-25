@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../../services/user.service";
+
+import { UserService } from "../../services";
 
 const AddUserForm: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -11,7 +12,7 @@ const AddUserForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await register({ username, email, password });
+            await UserService.register({ username, email, password });
             navigate("/users");
         } catch (error) {
             console.error("Błąd dodawania użytkownika:", error);

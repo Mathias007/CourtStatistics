@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../services/user.service";
 import { useAuth } from "../../context/AuthContext";
 
-const LoginForm = () => {
+const LoginForm: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { setIsAuthenticated } = useAuth();

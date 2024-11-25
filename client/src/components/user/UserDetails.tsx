@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getUserById } from "../../services/user.service";
-import { User } from "../../models/user.model";
+
+import { UserService } from "../../services";
+import { UserModel } from "../../models";
+import { Loading } from "../general";
 
 const UserDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserModel.User | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUser = async () => {
             if (id) {
-                const data = await getUserById(id);
+                const data = await UserService.getUserById(id);
                 setUser(data);
             }
         };
         fetchUser();
     }, [id]);
 
-    if (!user) return <p>Wczytywanie...</p>;
+    if (!user) return <Loading />;
 
     return (
         <div className="form-wrapper">
