@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { BarChart, CategoryChart, ResolvedCasesChart } from "../charts";
+import { BarChart, CategoryCharts, ResolvedCasesChart } from "../charts";
 import { Loading, ToggleSection } from "../general";
 
 import { CourtService } from "../../services";
@@ -118,7 +118,7 @@ const CourtDetails: React.FC = () => {
                 <div className="charts-section">
                     <BarChart courtId={court._id} />
                     <ResolvedCasesChart courtId={court._id} />
-                    <CategoryChart courtId={court._id} />
+                    <CategoryCharts courtId={court._id} />
                 </div>
             </ToggleSection>
         </div>

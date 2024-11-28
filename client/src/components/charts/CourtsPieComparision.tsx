@@ -15,7 +15,11 @@ const PieChartForCourts: React.FC<PieChartForCourtsProps> = ({ courts }) => {
         const backlogForLatestYear = court.statistics
             .filter((stat) => stat.year === latestYear)
             .reduce((sum, stat) => sum + stat.backlog_end, 0);
-        return { courtName: court.court_name, backlog: backlogForLatestYear };
+        return {
+            courtName: court.court_name,
+            backlog: backlogForLatestYear,
+            latestYear,
+        };
     });
 
     const aggregateData = (key: "incoming" | "resolved") =>
@@ -64,7 +68,7 @@ const PieChartForCourts: React.FC<PieChartForCourtsProps> = ({ courts }) => {
             <div className="pie-chart">
                 <h3>
                     Stan zaległości po roku{" "}
-                    {Math.max(...latestYearStats.map((s) => s.backlog))}
+                    {Math.max(...latestYearStats.map((s) => s.latestYear))}
                 </h3>
                 <Pie
                     data={createDataset(

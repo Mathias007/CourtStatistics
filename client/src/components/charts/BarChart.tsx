@@ -9,7 +9,6 @@ import {
     CategoryScale,
     LinearScale,
 } from "chart.js";
-
 import { CourtService } from "../../services";
 import { CourtModel } from "../../models";
 
@@ -28,33 +27,45 @@ interface BarChartProps {
 
 const BarChart: React.FC<BarChartProps> = ({ courtId }) => {
     const [court, setCourt] = useState<CourtModel.Court | null>(null);
+    const [year, setYear] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchCourtData = async () => {
             const data = await CourtService.getCourtById(courtId);
             setCourt(data);
+            if (data.statistics.length > 0) {
+                setYear(data.statistics[0].year);
+            }
         };
-
         fetchCourtData();
     }, [courtId]);
 
     if (!court) return <p>Wczytywanie danych...</p>;
 
-    const years = court.statistics.map((stat) => stat.year);
-    const backlogStart = court.statistics.map((stat) => stat.backlog_start);
-    const backlogEnd = court.statistics.map((stat) => stat.backlog_end);
+    const years = Array.from(
+        new Set(court.statistics.map((stat) => stat.year))
+    );
+    const filteredStats = court.statistics.filter((stat) => stat.year === year);
 
     const data = {
-        labels: years,
+        labels: filteredStats.map((stat) =>
+            stat.category === "PENAL"
+                ? "Prawo Karne"
+                : stat.category === "CIVIL"
+                ? "Prawo Cywilne"
+                : stat.category === "LABOR"
+                ? "Prawo Pracy"
+                : "Nieznane"
+        ),
         datasets: [
             {
                 label: "Zaległość wejściowa",
-                data: backlogStart,
+                data: filteredStats.map((stat) => stat.backlog_start),
                 backgroundColor: "rgba(255, 99, 132, 0.6)",
             },
             {
                 label: "Zaległość wyjściowa",
-                data: backlogEnd,
+                data: filteredStats.map((stat) => stat.backlog_end),
                 backgroundColor: "rgba(54, 162, 235, 0.6)",
             },
         ],
@@ -63,6 +74,21 @@ const BarChart: React.FC<BarChartProps> = ({ courtId }) => {
     return (
         <div>
             <h3>Zaległości wejściowe i wyjściowe</h3>
+            <div className="chart-filter">
+                <label htmlFor="year-select">Wybierz rok: </label>
+                <select
+                    className="chart-select"
+                    id="year-select"
+                    value={year || ""}
+                    onChange={(e) => setYear(Number(e.target.value))}
+                >
+                    {years.map((yr) => (
+                        <option key={yr} value={yr}>
+                            {yr}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <Bar data={data} />
         </div>
     );

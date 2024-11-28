@@ -9,7 +9,6 @@ import {
     CategoryScale,
     LinearScale,
 } from "chart.js";
-
 import { CourtService } from "../../services";
 import { CourtModel } from "../../models";
 
@@ -28,11 +27,15 @@ interface ResolvedCasesChartProps {
 
 const ResolvedCasesChart: React.FC<ResolvedCasesChartProps> = ({ courtId }) => {
     const [court, setCourt] = useState<CourtModel.Court | null>(null);
+    const [year, setYear] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchCourtData = async () => {
             const data = await CourtService.getCourtById(courtId);
             setCourt(data);
+            if (data.statistics.length > 0) {
+                setYear(data.statistics[0].year);
+            }
         };
 
         fetchCourtData();
@@ -40,36 +43,42 @@ const ResolvedCasesChart: React.FC<ResolvedCasesChartProps> = ({ courtId }) => {
 
     if (!court) return <p>Wczytywanie danych...</p>;
 
-    const groupedData = court.statistics.reduce((acc, stat) => {
-        if (!acc[stat.year]) {
-            acc[stat.year] = { PENAL: 0, CIVIL: 0, LABOR: 0 };
-        }
-        acc[stat.year][stat.category] += stat.resolved;
-        return acc;
-    }, {} as Record<number, { PENAL: number; CIVIL: number; LABOR: number }>);
-
-    const years = Object.keys(groupedData).map((year) => parseInt(year, 10));
-    const datasets = [
-        {
-            label: "Prawo Karne",
-            data: years.map((year) => groupedData[year]?.PENAL || 0),
-            backgroundColor: "rgba(255, 99, 132, 0.6)",
-        },
-        {
-            label: "Prawo Cywilne",
-            data: years.map((year) => groupedData[year]?.CIVIL || 0),
-            backgroundColor: "rgba(54, 162, 235, 0.6)",
-        },
-        {
-            label: "Prawo Pracy",
-            data: years.map((year) => groupedData[year]?.LABOR || 0),
-            backgroundColor: "rgba(255, 206, 86, 0.6)",
-        },
-    ];
+    const years = Array.from(
+        new Set(court.statistics.map((stat) => stat.year))
+    );
+    const filteredStats = court.statistics.filter((stat) => stat.year === year);
 
     const data = {
-        labels: years,
-        datasets,
+        labels: filteredStats.map((stat) =>
+            stat.category === "PENAL"
+                ? "Prawo Karne"
+                : stat.category === "CIVIL"
+                ? "Prawo Cywilne"
+                : stat.category === "LABOR"
+                ? "Prawo Pracy"
+                : "Nieznane"
+        ),
+        datasets: [
+            {
+                label: "Załatwione sprawy",
+                data: [
+                    filteredStats
+                        .filter((stat) => stat.category === "PENAL")
+                        .reduce((sum, stat) => sum + stat.resolved, 0),
+                    filteredStats
+                        .filter((stat) => stat.category === "CIVIL")
+                        .reduce((sum, stat) => sum + stat.resolved, 0),
+                    filteredStats
+                        .filter((stat) => stat.category === "LABOR")
+                        .reduce((sum, stat) => sum + stat.resolved, 0),
+                ],
+                backgroundColor: [
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(54, 162, 235, 0.6)",
+                    "rgba(255, 206, 86, 0.6)",
+                ],
+            },
+        ],
     };
 
     const options = {
@@ -78,16 +87,27 @@ const ResolvedCasesChart: React.FC<ResolvedCasesChartProps> = ({ courtId }) => {
             legend: {
                 position: "top" as const,
             },
-            title: {
-                display: true,
-                text: "Załatwione sprawy w podziale na kategorie",
-            },
         },
     };
 
     return (
         <div>
             <h3>Załatwione sprawy</h3>
+            <div className="chart-filter">
+                <label htmlFor="year-select">Wybierz rok: </label>
+                <select
+                    className="chart-select"
+                    id="year-select"
+                    value={year || ""}
+                    onChange={(e) => setYear(Number(e.target.value))}
+                >
+                    {years.map((yr) => (
+                        <option key={yr} value={yr}>
+                            {yr}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <Bar data={data} options={options} />
         </div>
     );
